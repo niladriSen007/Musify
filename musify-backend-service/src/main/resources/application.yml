@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: musify-backend-service
+  data:
+    mongodb:
+      uri: mongodb+srv://nil:nil@cluster0.p3wl4ot.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: musify
+      auto-index-creation: true
+cloudinary:
+  cloud-name: dt8cngf7o
+  api-key: 328429154488114
+  api-secret: Qo-CHLFHwm1Vqy33BlLLUWuFJys
+server:
+  port: 6000
+  servlet:
+    context-path: /api/v1/musify
