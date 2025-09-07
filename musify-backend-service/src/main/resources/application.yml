@@ -14,3 +14,6 @@ server:
   port: 6000
   servlet:
     context-path: /api/v1/musify
+storage:
+  provider:
+    default: cloudinary

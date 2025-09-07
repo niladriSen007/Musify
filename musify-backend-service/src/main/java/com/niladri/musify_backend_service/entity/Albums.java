@@ -28,6 +28,7 @@ public class Albums {
     private String coverImage;
     @NotBlank(message = "Background image is required")
     private String background;
+    private String imagePublicId;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate

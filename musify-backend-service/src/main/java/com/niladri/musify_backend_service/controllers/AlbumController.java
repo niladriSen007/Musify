@@ -1,6 +1,5 @@
 package com.niladri.musify_backend_service.controllers;
 
-import com.niladri.musify_backend_service.dtos.payload.AlbumRequest;
 import com.niladri.musify_backend_service.dtos.response.ApiResponse;
 import com.niladri.musify_backend_service.services.album.IAlbumService;
 import lombok.RequiredArgsConstructor;

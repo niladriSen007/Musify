@@ -1,4 +1,4 @@
-package com.niladri.musify_backend_service.dtos.response;
+package com.niladri.musify_backend_service.dtos.response.albums;
 
 import com.niladri.musify_backend_service.entity.Albums;
 
