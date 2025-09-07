@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface FileStorageStrategy {
 
-    String upload(MultipartFile file, Map<String, Object> options) throws IOException;
+    Map<String, String> upload(MultipartFile file, Map<String, Object> options,String resourceType) throws IOException;
     void delete(String publicId) throws IOException;
 
 }

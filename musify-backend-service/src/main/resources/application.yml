@@ -6,6 +6,10 @@ spring:
       uri: mongodb+srv://nil:nil@cluster0.p3wl4ot.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
       database: musify
       auto-index-creation: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 cloudinary:
   cloud-name: dt8cngf7o
   api-key: 328429154488114

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -19,17 +20,24 @@ public class CloudinaryStorageStrategy implements FileStorageStrategy {
     private final Cloudinary cloudinary;
 
     @Override
-    public String upload(MultipartFile file, Map<String, Object> options) {
+    public Map<String, String> upload(MultipartFile file, Map<String, Object> options, String resourceType) {
         try {
             Map<String, Object> opts = new HashMap<>();
             if (options != null) {
                 opts.putAll(options);
             }
-            // default to image
-            opts.putIfAbsent("resource_type", "image");
+            opts.putIfAbsent("resource_type", resourceType);
             Map<?, ?> result = cloudinary.uploader().upload(file.getBytes(), opts);
             Object secureUrl = result.get("secure_url");
-            return secureUrl != null ? secureUrl.toString() : null;
+            String duration = "";
+            if (Objects.equals(resourceType, "video")) {
+                duration = formatDuration((Double) result.get("duration"));
+            }
+            Map<String, String> uploadResult = new HashMap<>();
+            uploadResult.put("url", secureUrl.toString());
+            uploadResult.put("duration", duration);
+
+            return uploadResult;
         } catch (IOException e) {
             throw new FileUploadException("Failed to upload file to Cloudinary", e);
         }
@@ -38,6 +46,18 @@ public class CloudinaryStorageStrategy implements FileStorageStrategy {
     @Override
     public void delete(String publicId) throws IOException {
         cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+    }
+
+    private String formatDuration(Double durationSeconds) {
+        if (durationSeconds == null) {
+            return "0:00";
+        }
+
+        int minutes = (int) (durationSeconds / 60);
+        int seconds = (int) (durationSeconds % 60);
+
+        return String.format("%d:%02d", minutes, seconds);
+
     }
 
 

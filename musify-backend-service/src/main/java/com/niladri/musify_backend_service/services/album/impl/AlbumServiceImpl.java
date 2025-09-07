@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -38,10 +39,12 @@ public class AlbumServiceImpl implements IAlbumService {
 
             // Use strategy pattern for file upload
             fileStorageContext.setStrategy(cloudinaryStorageStrategy);
-            String imageUrl = fileStorageContext.upload(
+            Map<String, String> uploadResult = fileStorageContext.upload(
                     album.getImageFile(),
-                    null
+                    null,
+                    "image"
             );
+            String imageUrl = uploadResult.get("url");
             String[] parts = imageUrl.split("/");
             String publicId = parts[parts.length - 1].split("\\.")[0];
 
@@ -59,8 +62,8 @@ public class AlbumServiceImpl implements IAlbumService {
             return ApiResponse.success(HttpStatus.CREATED.value(), "Album created successfully", newCreatedAlbum);
         } catch (IOException e) {
             ErrorResponse error = ErrorResponse.builder()
-                    .code("IMAGE_UPLOAD_FAILED")
-                    .message("Failed to upload album cover image: " + e.getMessage())
+                    .code("ALBUM_CREATION_FAILED")
+                    .message("Failed to create album: " + e.getMessage())
                     .timestamp(Instant.now())
                     .build();
             return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Unable to create album", error);
